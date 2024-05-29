@@ -47,8 +47,7 @@ Metrics/MethodLength:
 # ネストが深すぎないかをチェック（if文のネストもチェック）
 Metrics/BlockNesting:
  Max: 5
-
-# クラスの行数をチェック（無効）
+ # クラスの行数をチェック（無効）
 Metrics/ClassLength:
  Enabled: false
 
