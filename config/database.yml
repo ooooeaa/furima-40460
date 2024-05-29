@@ -8,7 +8,7 @@ development:
   username: root
   password:
   host: localhost
-  database: furima_40460_development
+  database: furima-40460_development
 
 test:
   <<: *default
@@ -16,7 +16,7 @@ test:
   username: root
   password:
   host: localhost
-  database: furima_40460_test
+  database: furima-40460_test
 
 production:
   <<: *default
