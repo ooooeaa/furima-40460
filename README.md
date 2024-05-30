@@ -38,7 +38,7 @@
 - has_one :addresses
 - belongs_to :users
 
-## payment テーブル
+## payments テーブル
 
 | Colum                    | Type       | Options     |
 | ------------------------ | ---------- | ----------- |
@@ -53,7 +53,7 @@
 - belongs_to :users
 - belongs_to :items
 
-## address テーブル
+## addresses テーブル
 
 | Colum                    | Type       | Options     |
 | ------------------------ | ---------- | ----------- |
