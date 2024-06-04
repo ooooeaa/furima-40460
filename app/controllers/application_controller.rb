@@ -4,13 +4,13 @@ class ApplicationController < ActionController::Base
 
   private
 
-  def basic_auth
-    authenticate_or_request_with_http_basic do |username, password|
-      username == ENV["BASIC_AUTH_USER"] && password == ENV["BASIC_AUTH_PASSWORD"]  # 環境変数を読み込む記述に変更
-    end
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:nickname, :email, :password, :birth_date, :first_name, :last_name, :first_name_kana, :last_name_kana])
   end
 
-  def configure_permitted_parameters
-      devise_parameter_sanitizer.permit( :sign_up, keys: [:nickname, :email, :password, :birth_date, :first_name, :last_name, :first_name_kana, :last_name_kana])
+  def basic_auth
+    authenticate_or_request_with_http_basic do |username, password|
+      username == ENV["BASIC_AUTH_USER"] && password == ENV["BASIC_AUTH_PASSWORD"]
+    end
   end
 end
