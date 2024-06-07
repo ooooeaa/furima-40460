@@ -98,6 +98,17 @@ RSpec.describe User, type: :model do
         @user.password_confirmation = 'password456'
         expect(@user.valid?).to be(false)
       end
+      it 'emailが一意性であること' do
+        @user.save
+        another_user = FactoryBot.build(:user, email: @user.email)
+        another_user.valid?
+        expect(another_user.errors.full_messages).to include("Email has already been taken")
+      end
+      it 'emailは、@を含む必要があること' do
+        @user.email = 'test.com'
+        @user.valid?
+        expect(@user.errors.full_messages).to include("Email is invalid")
+      end
       it 'last_nameは、全角（漢字・ひらがな・カタカナ）での入力が必須である' do
         @user.last_name = 'yamada'
         expect(@user).not_to be_valid
