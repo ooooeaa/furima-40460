@@ -3,11 +3,10 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   validates :nickname, presence: true
-  VALID_PASSWORD_REGEX = /\A(?=.*?[a-z])(?=.*?\d)[a-z\d]+\z/i
-  validates :password, presence: true, format: { with: VALID_PASSWORD_REGEX, message: 'must contain both letters and numbers' }
-  validates :first_name, :last_name, presence: true, format: { with: /\A[ぁ-んァ-ン一-龠々]+\z/ }
+  validates :password, format: { with: /\A(?=.*?[a-z])(?=.*?\d)[a-z\d]+\z/i, message: 'must contain both letters and numbers' }
+  validates :first_name, :last_name, presence: true, format: { with: /\A[ぁ-んァ-ヶ一-龥々ー]+\z/ }
   validates :first_name_kana, :last_name_kana, presence: true, format: { with: /\A[\p{katakana}\p{blank}ー－]+\z/ }
   validates :birth_date, presence: true
 
-  has_many :items
+  #has_many :items
 end
