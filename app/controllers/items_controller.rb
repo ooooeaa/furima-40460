@@ -4,13 +4,21 @@ class ItemsController < ApplicationController
   end
 
   def new
-    @items = Item.all
+    @item = Item.new
   end
 
   def create
-    Item.create(Item_params)
-    redirect_to '/'
+    @item = Item.new(item_params)
+    if @item.save
+      redirect_to root_path
+    else
+      logger.debug(@item.errors.full_messages)
+      # or if you prefer using byebug:
+      # byebug
+      render :new
+    end
   end
+  
 
   private
   def item_params
