@@ -101,6 +101,12 @@
           <span class="sell-yen">¥</span>
           <%= f.text_field :price, class:"price-input", id:"item_price", placeholder:"例）300" %>
         </div>
+        
+        <% if @item.errors.include?(:price) %>
+  <% @item.errors.full_messages_for(:price).each do |message| %>
+    <p><%= message %></p>
+  <% end %>
+<% end %>
         <div class="price-content">
           <span>販売手数料 (10%)</span>
           <span>
