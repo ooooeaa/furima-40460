@@ -6,7 +6,12 @@ class Item < ApplicationRecord
   validates :image, presence: true
   validates :name, presence: true
   validates :explain, presence: true
-  validates :price, presence: true, numericality: { greater_than_or_equal_to: 300, less_than_or_equal_to: 9_999_999 }, format: { with: /\A[0-9]+\z/, message: "Price is not a number" }
+  validates :price, presence: { message: "can't be blank" }
+  validates :price, numericality: { message: 'is not a number' }, allow_nil: true
+  validates :price, numericality: { greater_than_or_equal_to: 300, message: 'must be greater than or equal to 300' },
+                    allow_nil: true
+  validates :price, numericality: { less_than_or_equal_to: 9_999_999, message: 'must be less than or equal to 9999999' },
+                    allow_nil: true
 
   extend ActiveHash::Associations::ActiveRecordExtensions
   belongs_to :category
