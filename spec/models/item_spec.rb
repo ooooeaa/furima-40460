@@ -9,14 +9,13 @@ RSpec.describe Item, type: :model do
   describe '商品出品' do
     context '新規商品出品できるとき' do
       it 'imageが存在する' do
-        @item.image = fixture_file_upload('spec/fixtures/test_image.jpg')
-        expect(@item).to be_valid
+        expect(@item.image).to be_attached
       end
-      it 'nameが40文字以内で存在する' do
+      it 'nameが存在する' do
         @item.name = '商品名'
         expect(@item).to be_valid
       end
-      it 'explainが1000文字以内で存在する' do
+      it 'explainが存在する' do
         @item.explain = '商品です'
         expect(@item).to be_valid
       end
@@ -37,7 +36,7 @@ RSpec.describe Item, type: :model do
         expect(@item).to be_valid
       end
       it 'scheduled_deliveryが存在する' do
-        @item.prefecture_id = 2
+        @item.scheduled_delivery_id = 2
         expect(@item).to be_valid
       end
       it 'priceが半角数字、300〜9,999,999の範囲内で存在する' do
@@ -45,6 +44,7 @@ RSpec.describe Item, type: :model do
         expect(@item).to be_valid
       end
     end
+
     context '新規商品出品できないとき' do
       it 'nameが空では登録できない' do
         @item.name = nil
