@@ -20,10 +20,10 @@ class ItemsController < ApplicationController
     end
   end
 
-  # def show
-  # @item = Item.find(params[:id])
-  # @user = @item.user
-  # end
+  def show
+    @item = Item.find(params[:id])
+    @user = @item.user
+  end
 
   # def destroy
   # @item.destroy
@@ -50,7 +50,7 @@ class ItemsController < ApplicationController
                                  :scheduled_delivery_id, :price, :image).merge(user_id: current_user.id)
   end
 
-  # def set_item
-  # @item = Item.find(params[:id])
-  # end
+  def set_item
+    @item = Item.find(params[:id])
+  end
 end
