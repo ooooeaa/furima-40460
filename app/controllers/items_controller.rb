@@ -4,7 +4,7 @@ class ItemsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:index]
 
   def index
-    #@items = Item.order('created_at DESC')
+    @items = Item.order('created_at DESC')
   end
 
   def new
@@ -20,28 +20,28 @@ class ItemsController < ApplicationController
     end
   end
 
-  #def show
-    #@item = Item.find(params[:id])
-    #@user = @item.user
-  #end
+  # def show
+  # @item = Item.find(params[:id])
+  # @user = @item.user
+  # end
 
-  #def destroy
-    #@item.destroy
-    #redirect_to items_path
-  #end
+  # def destroy
+  # @item.destroy
+  # redirect_to items_path
+  # end
 
-  #def edit
-    #@item = Item.find(params[:id])
-  #end
+  # def edit
+  # @item = Item.find(params[:id])
+  # end
 
-  #def update
-    #@item = Item.find(params[:id])
-    #if @item.update(item_params)
-     # redirect_to item_path(@item.id)
-   # else
-      #render :edit, status: :unprocessable_entity
-   # end
-  #end
+  # def update
+  # @item = Item.find(params[:id])
+  # if @item.update(item_params)
+  # redirect_to item_path(@item.id)
+  # else
+  # render :edit, status: :unprocessable_entity
+  # end
+  # end
 
   private
 
@@ -50,7 +50,7 @@ class ItemsController < ApplicationController
                                  :scheduled_delivery_id, :price, :image).merge(user_id: current_user.id)
   end
 
- # def set_item
-   # @item = Item.find(params[:id])
- # end
+  # def set_item
+  # @item = Item.find(params[:id])
+  # end
 end
