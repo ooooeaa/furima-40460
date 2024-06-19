@@ -1,6 +1,7 @@
 class ItemsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   before_action :set_item, only: [:destroy, :show, :edit, :update]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
+  before_action :redirect_if_not_authorized, only: [:edit, :update]
   skip_before_action :authenticate_user!, only: [:index]
 
   def index
@@ -31,7 +32,7 @@ class ItemsController < ApplicationController
   # end
 
   def edit
-   @item = Item.find(params[:id])
+    @item = Item.find(params[:id])
   end
 
   def update
@@ -43,6 +44,10 @@ class ItemsController < ApplicationController
     end
   end
 
+  # def sold?
+  # !buyer.nil?
+  # end
+
   private
 
   def item_params
@@ -52,5 +57,11 @@ class ItemsController < ApplicationController
 
   def set_item
     @item = Item.find(params[:id])
+  end
+
+  def redirect_if_not_authorized
+    return unless current_user.id != @item.user_id
+
+    redirect_to root_path
   end
 end
