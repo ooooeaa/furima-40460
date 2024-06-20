@@ -1,6 +1,7 @@
 class ItemsController < ApplicationController
-  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
   before_action :set_item, only: [:destroy, :show, :edit, :update]
+  before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
+  before_action :redirect_if_not_authorized, only: [:edit, :update]
   skip_before_action :authenticate_user!, only: [:index]
 
   def index
@@ -21,26 +22,27 @@ class ItemsController < ApplicationController
   end
 
   def show
-    @item = Item.find(params[:id])
     @user = @item.user
   end
 
   # def destroy
-  # @item.destroy
-  # redirect_to items_path
+  #   @item.destroy
+  #   redirect_to items_path
   # end
 
-  # def edit
-  # @item = Item.find(params[:id])
-  # end
+  def edit
+  end
 
-  # def update
-  # @item = Item.find(params[:id])
-  # if @item.update(item_params)
-  # redirect_to item_path(@item.id)
-  # else
-  # render :edit, status: :unprocessable_entity
-  # end
+  def update
+    if @item.update(item_params)
+      redirect_to item_path(@item.id)
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  # def sold?
+  #   !buyer.nil?
   # end
 
   private
@@ -52,5 +54,11 @@ class ItemsController < ApplicationController
 
   def set_item
     @item = Item.find(params[:id])
+  end
+
+  def redirect_if_not_authorized
+    return unless current_user.id != @item.user_id
+
+    redirect_to root_path
   end
 end
