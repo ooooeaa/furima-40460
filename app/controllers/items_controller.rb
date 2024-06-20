@@ -1,7 +1,7 @@
 class ItemsController < ApplicationController
   before_action :set_item, only: [:destroy, :show, :edit, :update]
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
-  before_action :redirect_if_not_authorized, only: [:edit, :update]
+  before_action :redirect_if_not_authorized, only: [:edit, :update, :destroy]
   skip_before_action :authenticate_user!, only: [:index]
 
   def index
@@ -25,10 +25,10 @@ class ItemsController < ApplicationController
     @user = @item.user
   end
 
-  # def destroy
-  #   @item.destroy
-  #   redirect_to items_path
-  # end
+  def destroy
+    @item.destroy
+    redirect_to root_path
+  end
 
   def edit
   end
