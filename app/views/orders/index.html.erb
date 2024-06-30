@@ -32,12 +32,13 @@
     <%# /支払額の表示 %>
 
     <%# 注文フォーム %>
-    <%=form_with model: @order_address, url: item_orders_path(@item), id: 'charge-form', class: 'transaction-form-wrap', local: true do |f| %>
-      <%# render 'shared/error_messages', model: f.object %>
+    <%= form_with model: @order_address, url: item_orders_path(@item), id: 'charge-form', class: 'transaction-form-wrap', local: true do |f| %>
+    
+      <%= render 'shared/error_messages', model: f.object %>
 
       <%# 隠しフィールドとしてuser_idとitem_idを設定 %>
-      <%= f.hidden_field :user_id, value: current_user.id %>
-      <%= f.hidden_field :item_id, value: @item.id %>
+      <%= f.hidden_field :user_id %>
+      <%= f.hidden_field :item_id %>
 
       <%# カード情報の入力 %>
       <div class='credit-card-form'>
