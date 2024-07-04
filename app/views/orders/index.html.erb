@@ -1,5 +1,5 @@
+<%= include_gon %>
 <%= render "shared/second-header"%>
-
 <div class='transaction-contents'>
   <div class='transaction-main'>
     <h1 class='transaction-title-text'>
@@ -8,17 +8,17 @@
 
     <%# 購入内容の表示 %>
     <div class='buy-item-info'>
-    <%= image_tag @item.image, class: 'buy-item-img' %>
-    <div class='buy-item-right-content'>
-      <h2 class='buy-item-text'>
-        <%= @item.name %>
-      </h2>
-      <div class='buy-item-price'>
-        <p class='item-price-text'>¥<%= @item.price %></p>
-        <p class='item-price-sub-text'><%= @item.shipping_fee_status.name %></p>
+      <%= image_tag @item.image, class: 'buy-item-img' %>
+      <div class='buy-item-right-content'>
+        <h2 class='buy-item-text'>
+          <%= @item.name %>
+        </h2>
+        <div class='buy-item-price'>
+          <p class='item-price-text'>¥<%= @item.price %></p>
+          <p class='item-price-sub-text'><%= @item.shipping_fee_status.name %></p>
+        </div>
       </div>
     </div>
-  </div>
     <%# /購入内容の表示 %>
 
     <%# 支払額の表示 %>
@@ -28,6 +28,7 @@
       </h1>
       <p class='item-payment-price'>
         ¥<%= @item.price %>
+      </p>
     </div>
     <%# /支払額の表示 %>
 
@@ -36,13 +37,9 @@
     
       <%= render 'shared/error_messages', model: f.object %>
 
-      <%# 隠しフィールドとしてuser_idとitem_idを設定 %>
-      <%= f.hidden_field :user_id %>
-      <%= f.hidden_field :item_id %>
-
       <%# カード情報の入力 %>
       <div class='credit-card-form'>
-        <h1 class='info-input-haedline'>
+        <h1 class='info-input-headline'>
           クレジットカード情報入力
         </h1>
         <div class="form-group">
@@ -78,8 +75,11 @@
       <%# /カード情報の入力 %>
 
       <%# 配送先の入力 %>
+      <%# 隠しフィールドとしてuser_idとitem_idを設定 %>
+      <%= f.hidden_field :user_id %>
+      <%= f.hidden_field :item_id %>
       <div class='shipping-address-form'>
-        <h1 class='info-input-haedline'>
+        <h1 class='info-input-headline'>
           配送先入力
         </h1>
         <div class="form-group">
