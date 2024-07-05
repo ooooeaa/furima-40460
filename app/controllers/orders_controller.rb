@@ -1,13 +1,20 @@
 class OrdersController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_item, only: [:index, :new, :create, :show]
+  before_action :redirect_if_sold_out_or_not_eligible, only: [:new, :create]
 
   def index
-    gon.public_key = ENV['PAYJP_PUBLIC_KEY']
-    @order_address = OrderAddress.new
+    if @item.user == current_user || @item.sold_out?
+      redirect_to root_path
+    else
+      gon.public_key = ENV['PAYJP_PUBLIC_KEY']
+      @order_address = OrderAddress.new
+    end
   end
 
   def new
     @order_address = OrderAddress.new(item_id: params[:item_id])
+    render :index
   end
 
   def create
@@ -41,5 +48,11 @@ class OrdersController < ApplicationController
       card: order_params[:token], # カードトークン
       currency: 'jpy' # 通貨の種類（日本円）
     )
+  end
+
+  def redirect_if_sold_out_or_not_eligible
+    return unless @item.sold_out? || @item.user == current_user
+
+    redirect_to root_path
   end
 end
