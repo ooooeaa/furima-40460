@@ -12,6 +12,9 @@ class Item < ApplicationRecord
                     allow_nil: true
   validates :price, numericality: { only_integer: true, less_than_or_equal_to: 9_999_999, message: 'must be less than or equal to 9999999' },
                     allow_nil: true
+  def sold_out?
+    sold_out
+  end
 
   extend ActiveHash::Associations::ActiveRecordExtensions
   belongs_to :category
