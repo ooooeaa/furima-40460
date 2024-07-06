@@ -22,18 +22,22 @@ RSpec.describe OrderAddress, type: :model do
       it 'tokenがあれば保存ができること' do
         expect(@order_address).to be_valid
       end
+      it '建物名が空でも購入できること' do
+        @order_address.building = ''
+        expect(@order_address).to be_valid
+      end
     end
 
     context '商品購入ができない時' do
       it 'user_idが空では登録できない' do
         @order_address.user_id = nil
         @order_address.valid?
-        expect(@order_address.errors[:user_id]).to include('must exist')
+        expect(@order_address.errors[:user_id]).to include("can't be blank")
       end
       it 'item_idが空では登録できない' do
         @order_address.item_id = nil
         @order_address.valid?
-        expect(@order_address.errors[:item_id]).to include('must exist')
+        expect(@order_address.errors[:item_id]).to include("can't be blank")
       end
     end
   end
@@ -74,7 +78,7 @@ RSpec.describe OrderAddress, type: :model do
         expect(@order_address.errors[:postal_code]).to include('is invalid. Include hyphen(-)')
       end
       it 'prefectureが空では登録できない' do
-        @order_address.prefecture_id = nil
+        @order_address.prefecture_id = 0
         @order_address.valid?
         expect(@order_address.errors[:prefecture_id]).to include("can't be blank")
       end
@@ -93,10 +97,20 @@ RSpec.describe OrderAddress, type: :model do
         @order_address.valid?
         expect(@order_address.errors[:phone_number]).to include("can't be blank")
       end
-      it 'phone_numberが10桁以上11桁以内の半角数値でないと登録できない' do
+      it 'phone_numberが9桁以下では登録できないこと' do
         @order_address.phone_number = '123456789'
         @order_address.valid?
-        expect(@order_address.errors[:phone_number]).to include('is invalid')
+        expect(@order_address.errors.full_messages).to include('Phone number is invalid')
+      end
+      it 'phone_numberが12桁以上では登録できないこと' do
+        @order_address.phone_number = '123456789012'
+        @order_address.valid?
+        expect(@order_address.errors.full_messages).to include('Phone number is invalid')
+      end
+      it 'phone_numberに半角数字以外が含まれている場合、登録できないこと' do
+        @order_address.phone_number = '12345abc678'
+        @order_address.valid?
+        expect(@order_address.errors.full_messages).to include('Phone number is invalid')
       end
       it 'tokenが空では登録できないこと' do
         @order_address.token = nil
