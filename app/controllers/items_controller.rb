@@ -1,7 +1,7 @@
 class ItemsController < ApplicationController
   before_action :set_item, only: [:destroy, :show, :edit, :update]
   before_action :authenticate_user!, only: [:new, :create, :edit, :update, :destroy]
-  before_action :redirect_if_not_authorized, only: [:edit, :update, :destroy]
+  before_action :redirect_if_not_authorized, :redirect_if_sold_out, only: [:edit, :update, :destroy]
   skip_before_action :authenticate_user!, only: [:index]
 
   def index
@@ -15,6 +15,7 @@ class ItemsController < ApplicationController
   def create
     @item = Item.new(item_params)
     if @item.save
+      Order.create(order_params)
       redirect_to root_path
     else
       render :new, status: :unprocessable_entity
@@ -22,6 +23,7 @@ class ItemsController < ApplicationController
   end
 
   def show
+    @item = Item.find(params[:id])
     @user = @item.user
   end
 
@@ -52,12 +54,22 @@ class ItemsController < ApplicationController
                                  :scheduled_delivery_id, :price, :image).merge(user_id: current_user.id)
   end
 
+  def order_params
+    params.permit(:postal_code, :prefecture, :city, :addresses, :building, :phone_number).merge(item_id: @item.id)
+  end
+
   def set_item
     @item = Item.find(params[:id])
   end
 
   def redirect_if_not_authorized
     return unless current_user.id != @item.user_id
+
+    redirect_to root_path
+  end
+
+  def redirect_if_sold_out
+    return unless @item.sold_out?
 
     redirect_to root_path
   end
